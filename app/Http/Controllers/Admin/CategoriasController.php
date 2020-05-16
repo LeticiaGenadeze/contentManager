@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CategoriasController extends Controller
 {
@@ -15,17 +17,12 @@ class CategoriasController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $categorias = Categoria::all();
+        if(!$categorias){
+            return response()->json([
+                'error' => 'Nenhuma categoria encontrada!'], 404);
+        }
+        return $categorias;
     }
 
     /**
@@ -36,7 +33,28 @@ class CategoriasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data =  $request->all();
+        $validation = Validator::make($data,[
+            'nome' => 'required|unique:categorias,nome'
+        ]);
+
+        if($validation->fails()){
+            $errors = $validation->errors();
+            return $errors->toJson();
+        }
+        $data['slug'] = Str::slug($data['nome'], '-');
+
+        $categorias = new Categoria();
+
+        $categorias->fill($data);
+
+        if ($categorias->save()){
+            return response()->json([
+                'success' => 'Categoria salva com Sucesso!'], 201);
+        }
+
+        return response()->json([
+            'error' => 'Erro ao cadastrar a Categoria!'], 500);
     }
 
     /**
@@ -45,20 +63,10 @@ class CategoriasController extends Controller
      * @param  \App\Models\Admin\Categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function show(Categoria $categoria)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Admin\Categoria  $categoria
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Categoria $categoria)
-    {
-        //
+        $categorias = Categoria::query()->where('id', $id)->get();
+        return $categorias;
     }
 
     /**
@@ -68,9 +76,28 @@ class CategoriasController extends Controller
      * @param  \App\Models\Admin\Categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categoria $categoria)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $validation = Validator::make($data,[
+            'nome' => 'required|unique:categorias,nome'
+        ]);
+
+        if($validation->fails()){
+            $errors = $validation->errors();
+            return $errors->toJson();
+        }
+        $data['slug'] = Str::slug($data['nome'], '-');
+        $categoria = Categoria::query()->where('id', $id)->first();
+        if($categoria){
+            $categoria->fill($data);
+            if ($categoria->save()){
+                return response()->json([
+                    'success' => 'Categoria atualizada com Sucesso!'], 201);
+            }
+            return response()->json([
+                'error' => 'Não foi possivel atualizar a Categoria!'], 500);
+        }
     }
 
     /**
@@ -79,8 +106,16 @@ class CategoriasController extends Controller
      * @param  \App\Models\Admin\Categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categoria $categoria)
+    public function destroy($id)
     {
-        //
+        $categoria = Categoria::where('id', $id)->first();
+        if($categoria){
+           if (!$categoria->delete()){
+            return response()->json([
+                'error' => 'Não foi possivel deletar a Categoria!'], 500);
+            }
+            return response()->json([
+                'success' => 'Categoria deletada com Sucesso!'], 200);
+        }
     }
 }
