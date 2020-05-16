@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+route::resource('posts', 'Admin\PostsController');
+route::resource('paginas', 'Admin\PaginasController');
+route::resource('imagens', 'Admin\ImagensController');
+route::resource('categorias', 'Admin\CategoriasController');
