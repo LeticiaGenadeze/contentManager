@@ -82,7 +82,7 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = Post::query()->where('id', $id)->get();
+        $post = Post::with('imagens')->where('id', $id)->get();
         return $post;
     }
 

@@ -65,7 +65,7 @@ class CategoriasController extends Controller
      */
     public function show($id)
     {
-        $categorias = Categoria::query()->where('id', $id)->get();
+        $categorias = Categoria::with('posts')->where('id', $id)->get();
         return $categorias;
     }
 

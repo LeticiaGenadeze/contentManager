@@ -12,6 +12,6 @@ class Categoria extends Model
     ];
     public function posts()
     {
-        return $this->hasMany(Post::class, 'id', 'idCategoria');
+        return $this->hasMany(Post::class, 'idCategoria', 'id');
     }
 }

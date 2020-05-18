@@ -13,6 +13,6 @@ class Imagem extends Model
 
     public function post()
     {
-        return $this->belongsTo(Post::class, 'id', 'idPost');
+        return $this->belongsTo(Post::class, 'idPost', 'id');
     }
 }

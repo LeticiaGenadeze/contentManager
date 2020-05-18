@@ -13,6 +13,6 @@ class Post extends Model
     ];
     public function imagens()
     {
-        return $this->hasMany(Imagem::class, 'id', 'idPost');
+        return $this->hasMany(Imagem::class, 'idPost', 'id');
     }
 }
