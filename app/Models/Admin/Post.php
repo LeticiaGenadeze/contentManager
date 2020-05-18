@@ -3,6 +3,7 @@
 namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Admin\Imagem;
 
 class Post extends Model
 {
@@ -10,4 +11,8 @@ class Post extends Model
         'nome', 'slug', 'descricao', 'conteudo', 'capa',
         'video', 'status', 'tipo', 'idCategoria'
     ];
+    public function imagens()
+    {
+        return $this->hasMany(Imagem::class, 'id', 'idPost');
+    }
 }
