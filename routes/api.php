@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-route::resource('posts', 'Admin\PostsController');
-route::resource('paginas', 'Admin\PaginasController');
-route::resource('imagens', 'Admin\ImagensController');
-route::resource('categorias', 'Admin\CategoriasController');
+route::resource('posts', 'Api\Admin\PostsController');
+route::resource('paginas', 'Api\Admin\PaginasController');
+route::resource('imagens', 'Api\Admin\ImagensController');
+route::resource('categorias', 'Api\Admin\CategoriasController');
