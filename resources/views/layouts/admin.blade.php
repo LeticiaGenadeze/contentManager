@@ -11,6 +11,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script>window.Laravel = {csrfToken: '{{ csrf_token() }}'}</script>
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -20,6 +21,8 @@
 
   <!-- Custom styles for this template-->
   <link href="{{asset('themes/admin')}}/css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="{{asset('')}}css/app.css" rel="stylesheet">
+
 
     </head>
 
@@ -88,12 +91,7 @@
   <!-- Custom scripts for all pages-->
   <script src="{{asset('themes/admin')}}/js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="{{asset('themes/admin')}}/vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="{{asset('themes/admin')}}/js/demo/chart-area-demo.js"></script>
-  <script src="{{asset('themes/admin')}}/js/demo/chart-pie-demo.js"></script>
+  <script src="{{asset('')}}js/app.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" defer></script>
     <script>
         $(document).ready(function(){
