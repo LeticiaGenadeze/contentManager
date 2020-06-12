@@ -10,17 +10,14 @@
       <div class="card-header py-3">
         <div class="row">
           <div class="col-md-8">
-            <h6 class="m-0 font-weight-bold text-primary">Posts</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Páginas</h6>
           </div>
           <div class="col-md-4 text-right">
             <button
               data-toggle="modal"
               data-target="#exampleModal"
               class="btn bg-gradient-info text-white"
-            >Adicionar novo post</button>
-            <a href="categorias">
-              <button class="btn bg-gradient-warning text-white">Categorias</button>
-            </a>
+            >Adicionar nova Página</button>
           </div>
         </div>
       </div>
@@ -77,7 +74,7 @@
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Post</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Página</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -95,36 +92,6 @@
                       v-model="post.nome"
                     />
                   </div>
-                  <div class="row">
-                    <div class="col">
-                      <label for="idCategoria">Categoria</label>
-                      <div class="input-group">
-                        <select class="custom-select" id="idCategoria" v-model="post.idCategoria">
-                          <option
-                            v-for="categoria in categorias"
-                            v-bind:key="categoria.id"
-                            :value="categoria.id"
-                          >{{categoria.nome}}</option>
-                        </select>
-                        <div class="input-group-append">
-                          <label class="input-group-text" for="inputGroupSelect02">Opções</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="form-group">
-                        <label for="video">Vídeo</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="video"
-                          placeholder="Informe o ID do Vídeo do Youtube"
-                          v-model="post.video"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
                   <div class="form-group">
                     <label for="descricao">Descrição</label>
                     <input
@@ -172,9 +139,6 @@
                   <b>Conteúdo:</b>
                   {{verpost.conteudo}}
                 </p>
-                <p>
-                  <iframe v-if="verpost.video != null" width="420" height="315" :src="verpost.videoLink + verpost.video"></iframe>
-                </p>
               </div>
             </div>
           </div>
@@ -192,20 +156,15 @@ export default {
       categorias: [],
       post: {
         id: "",
-        idCategoria: "",
         nome: "",
         conteudo: "",
-        descricao: "",
-        video: ""
+        descricao: ""
       },
       verpost: {
         id: "",
-        idCategoria: "",
         nome: "",
         conteudo: "",
-        descricao: "",
-        video: "",
-        videoLink: "https://www.youtube.com/embed/"
+        descricao: ""
       },
       post_id: "",
       pagination: {},
@@ -220,12 +179,12 @@ export default {
 
   methods: {
     fetchPosts(page_url) {
-      page_url = page_url || BASE_URL + "/api/posts";
+      page_url = page_url || BASE_URL + "/api/paginas";
       var vm = this;
       axios
         .get(page_url)
         .then(function(response) {
-          vm.posts = response.data.data;
+          vm.posts = response.data;
           vm.makePagination(response);
         })
         .catch(function(error) {
@@ -242,7 +201,7 @@ export default {
       this.pagination = pagination;
     },
     deletarPost(id, page_url) {
-      page_url = page_url || BASE_URL + "/api/posts";
+      page_url = page_url || BASE_URL + "/api/paginas";
 
       if (confirm("Tem certeza que deseja excluir?" + id)) {
         axios
@@ -260,14 +219,12 @@ export default {
 
     addPost(page_url) {
       if (this.edit === false) {
-        page_url = BASE_URL + "/api/posts/";
+        page_url = BASE_URL + "/api/paginas/";
         axios
           .post(page_url, {
             nome: this.post.nome,
             descricao: this.post.descricao,
             conteudo: this.post.conteudo,
-            idCategoria: this.post.idCategoria,
-            video: this.post.video,
             method: "post",
             body: JSON.stringify(this.post),
             headers: {
@@ -285,14 +242,12 @@ export default {
             console.log(error);
           });
       } else {
-        page_url = BASE_URL + "/api/posts/" + this.post.id;
+        page_url = BASE_URL + "/api/paginas/" + this.post.id;
         axios
           .put(page_url, {
             nome: this.post.nome,
             descricao: this.post.descricao,
             conteudo: this.post.conteudo,
-            idCategoria: this.post.idCategoria,
-            video: this.post.video,
             method: "post",
             body: JSON.stringify(this.post),
             headers: {
@@ -318,8 +273,6 @@ export default {
       this.post.nome = post.nome;
       this.post.descricao = post.descricao;
       this.post.conteudo = post.conteudo;
-      this.post.idCategoria = post.idCategoria;
-      this.post.video = post.video;
       $("#exampleModal").modal("show");
       $(".modal-backdrop").add();
     },
@@ -329,13 +282,11 @@ export default {
       this.verpost.nome = post.nome;
       this.verpost.descricao = post.descricao;
       this.verpost.conteudo = post.conteudo;
-      this.verpost.idCategoria = post.idCategoria;
-      this.verpost.video = post.video;
       $("#verpost").modal("show");
       $(".modal-backdrop").add();
     },
     fetchCategorias(page_url) {
-      page_url = page_url || BASE_URL + "/api/categorias";
+      page_url = page_url || BASE_URL + "/api/paginas";
       var vm = this;
       axios
         .get(page_url)

@@ -19,7 +19,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $post = Post::where('tipo', 'post')->orderBy('created_at','DESC')->paginate(1);
+        $post = Post::where('tipo', 'post')->orderBy('created_at','DESC')->paginate(6);
         if(!$post){
             return response()->json([
                 'error' => 'Nenhum post encontrada!'], 404);
@@ -36,10 +36,12 @@ class PostsController extends Controller
     public function store(Request $request)
     {
         $data =  $request->all();
+           // $data['capa'] = base64_decode($data['capa']);
+         //   var_dump($data['capa']);
         $validation = Validator::make($data,[
             'nome' => 'required|unique:posts,nome',
             'descricao' => 'required',
-            'capa' => 'required|image|mimes:jpeg,jpg,png,max:2048',
+           // 'capa' => 'required|image|mimes:jpeg,jpg,png,max:2048',
             'idCategoria' => 'required'
         ]);
 
@@ -47,20 +49,27 @@ class PostsController extends Controller
             $errors = $validation->errors();
             return $errors->toJson();
         }
+
         $data['slug'] = Str::slug($data['nome'], '-');
 
-        if($data['capa'] && $data['capa']!= null){
+
+       /* if($data['capa'] && $data['capa']!= null){
             $name = $data['slug'].time();
-            $extension = $request->capa->extension();
+
+            $image_64 = $data['capa'];
+            $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];
+            $replace = substr($image_64, 0, strpos($image_64, ',')+1);
+            $image = str_replace($replace, '', $image_64);
+            $image = str_replace(' ', '+', $image);
             $nameFile = "{$name}.{$extension}";
-            $upload = $request->capa->storeAs('public/posts', $nameFile);
-            if ( !$upload ){
-                return response()->json([
-                    'error' => 'Falha ao fazer upload!'], 404);
-            }
+           // var_dump($image);
+             Storage::disk('public')->put($nameFile, base64_decode($image));
+
             $data['capa'] = $nameFile;
         }
+        */
         $data['tipo'] = 'post';
+
         $post = new Post();
 
         $post->fill($data);
@@ -71,7 +80,7 @@ class PostsController extends Controller
         }
 
         return response()->json([
-            'error' => 'Erro ao cadastrar o post!'], 500);
+            'error' => 'Erro ao cadastrar o post!'], 300);
     }
 
     /**
@@ -108,7 +117,7 @@ class PostsController extends Controller
         }
         $data['slug'] = Str::slug($data['nome'], '-');
 
-        if($data['capa']){
+      /*  if($data['capa']){
             $validation = Validator::make($data,[
                'capa' => 'image|mimes:jpeg,jpg,png,max:2048'
             ]);
@@ -133,12 +142,12 @@ class PostsController extends Controller
                 }
             }
             $data['capa'] = $nameFile;
-        }
+        }*/
 
         $post->fill($data);
         if ($post->save()){
             return response()->json([
-                'success' => 'Post atualizao com Sucesso!'], 201);
+                'success' => 'Post atualizado com Sucesso!'], 201);
         }
 
         return response()->json([

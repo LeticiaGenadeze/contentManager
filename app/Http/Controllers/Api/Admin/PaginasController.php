@@ -38,7 +38,7 @@ class PaginasController extends Controller
         $validation = Validator::make($data,[
             'nome' => 'required|unique:posts,nome',
             'descricao' => 'required',
-            'capa' => 'required|image|mimes:jpeg,jpg,png,max:2048'
+           // 'capa' => 'required|image|mimes:jpeg,jpg,png,max:2048'
         ]);
 
         if($validation->fails()){
@@ -47,7 +47,7 @@ class PaginasController extends Controller
         }
         $data['slug'] = Str::slug($data['nome'], '-');
 
-        if($data['capa'] && $data['capa']!= null){
+        /*if($data['capa'] && $data['capa']!= null){
             $name = $data['slug'].time();
             $extension = $request->capa->extension();
             $nameFile = "{$name}.{$extension}";
@@ -57,7 +57,7 @@ class PaginasController extends Controller
                     'error' => 'Falha ao fazer upload!'], 404);
             }
             $data['capa'] = $nameFile;
-        }
+        }*/
         $data['tipo'] = 'pagina';
         $pagina = new Post();
 
@@ -106,7 +106,7 @@ class PaginasController extends Controller
         }
         $data['slug'] = Str::slug($data['nome'], '-');
 
-        if($data['capa']){
+        /*if($data['capa']){
             $validation = Validator::make($data,[
                'capa' => 'image|mimes:jpeg,jpg,png,max:2048'
             ]);
@@ -131,7 +131,7 @@ class PaginasController extends Controller
                 }
             }
             $data['capa'] = $nameFile;
-        }
+        }*/
 
         $pagina->fill($data);
         if ($pagina->save()){
@@ -153,12 +153,12 @@ class PaginasController extends Controller
     {
         $pagina = Post::where('id', $id)->first();
         if($pagina){
-            if ($pagina->capa){
+          /*  if ($pagina->capa){
                 $capa = public_path('storage/paginas/'.$pagina->capa);
                 if(File::exists($capa)) {
                     unlink($capa);
                 }
-            }
+            }*/
            if (!$pagina->delete()){
             return response()->json([
                 'error' => 'Não foi possivel deletar a Pagina!'], 500);

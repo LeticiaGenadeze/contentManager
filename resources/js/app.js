@@ -22,6 +22,9 @@ window.Vue = require('vue');
 BASE_URL='http://localhost:8000'
 
 Vue.component('posts', require('./components/Posts.vue').default);
+Vue.component('categorias', require('./components/Categorias.vue').default);
+Vue.component('paginas', require('./components/Paginas.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

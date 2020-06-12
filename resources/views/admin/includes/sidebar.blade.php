@@ -20,7 +20,6 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-
     <!-- Nav Item - Charts -->
     <li class="nav-item">
     <a class="nav-link" href="{{url('admin/posts')}}">

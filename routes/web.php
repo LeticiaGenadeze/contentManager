@@ -23,4 +23,8 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/paginas', function () {
         return view('admin.paginas');
     });
+
+    Route::get('/categorias', function () {
+        return view('admin.categorias');
+    });
 });
