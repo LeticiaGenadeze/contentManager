@@ -50,11 +50,11 @@ class CategoriasController extends Controller
 
         if ($categorias->save()){
             return response()->json([
-                'success' => 'Categoria salva com Sucesso!'], 201);
+                'success' => 'Categoria criada com Sucesso!'], 201);
         }
 
         return response()->json([
-            'error' => 'Erro ao cadastrar a Categoria!'], 500);
+            'error' => 'Erro ao cadastrar a Categoria!'], 501);
     }
 
     /**
@@ -96,7 +96,7 @@ class CategoriasController extends Controller
                     'success' => 'Categoria atualizada com Sucesso!'], 201);
             }
             return response()->json([
-                'error' => 'Não foi possivel atualizar a Categoria!'], 500);
+                'error' => 'Não foi possivel atualizar a Categoria!'], 501);
         }
     }
 
@@ -112,10 +112,10 @@ class CategoriasController extends Controller
         if($categoria){
            if (!$categoria->delete()){
             return response()->json([
-                'error' => 'Não foi possivel deletar a Categoria!'], 500);
+                'error' => 'Não foi possivel deletar a Categoria!'], 501);
             }
             return response()->json([
-                'success' => 'Categoria deletada com Sucesso!'], 200);
+                'success' => 'Categoria deletada com Sucesso!'], 201);
         }
     }
 }

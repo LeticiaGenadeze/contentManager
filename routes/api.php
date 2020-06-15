@@ -22,3 +22,4 @@ route::resource('posts', 'Api\Admin\PostsController');
 route::resource('paginas', 'Api\Admin\PaginasController');
 route::resource('imagens', 'Api\Admin\ImagensController');
 route::resource('categorias', 'Api\Admin\CategoriasController');
+route::resource('estatisticas', 'Api\Admin\EstatisticasController');

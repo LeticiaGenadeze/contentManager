@@ -8,9 +8,14 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+//import VueFlashMessage from 'vue-flash-message';
+//Vue.use(VueFlashMessage);
+
+
+
 /**
  * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
+ * Vue components. It will recursively scan this directory for the Vue .
  * components and automatically register them with their "basename".
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
@@ -24,7 +29,7 @@ BASE_URL='http://localhost:8000'
 Vue.component('posts', require('./components/Posts.vue').default);
 Vue.component('categorias', require('./components/Categorias.vue').default);
 Vue.component('paginas', require('./components/Paginas.vue').default);
-
+Vue.component('estatisticas', require('./components/Estatisticas.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

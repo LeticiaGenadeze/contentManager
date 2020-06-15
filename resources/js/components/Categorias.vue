@@ -1,11 +1,7 @@
 <template>
   <div>
-    <link
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      rel="stylesheet"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-      crossorigin="anonymous"
-    />
+    <FlashMessage :position="'right bottom'"></FlashMessage>
+    <vue-confirm-dialog></vue-confirm-dialog>
     <div class="card shadow mb-4">
       <div class="card-header py-3">
         <div class="row">
@@ -14,8 +10,7 @@
           </div>
           <div class="col-md-4 text-right">
             <button
-              data-toggle="modal"
-              data-target="#exampleModal"
+              @click="openModalAddCat()"
               class="btn bg-gradient-info text-white"
             >Adicionar nova Categoria</button>
           </div>
@@ -51,10 +46,18 @@
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
             <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
-              <a class="page-link" href="#" @click="fetchCategorias(pagination.prev_page_url)">Anterior</a>
+              <a
+                class="page-link"
+                href="#"
+                @click="fetchCategorias(pagination.prev_page_url)"
+              >Anterior</a>
             </li>
             <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
-              <a class="page-link" href="#" @click="fetchCategorias(pagination.next_page_url)">Próximo</a>
+              <a
+                class="page-link"
+                href="#"
+                @click="fetchCategorias(pagination.next_page_url)"
+              >Próximo</a>
             </li>
           </ul>
         </nav>
@@ -113,6 +116,12 @@
 </template>
 
 <script>
+import FlashMessage from "@smartweb/vue-flash-message";
+Vue.use(FlashMessage);
+import VueConfirmDialog from "vue-confirm-dialog";
+Vue.use(VueConfirmDialog);
+Vue.component("vue-confirm-dialog", VueConfirmDialog.default);
+
 export default {
   data() {
     return {
@@ -134,8 +143,8 @@ export default {
   },
 
   methods: {
-         fetchCategorias(page_url) {
-       page_url = page_url || BASE_URL + "/api/categorias";
+    fetchCategorias(page_url) {
+      page_url = page_url || BASE_URL + "/api/categorias";
       var vm = this;
       axios
         .get(page_url)
@@ -147,11 +156,9 @@ export default {
           console.log(error);
         });
     },
-
     makealert(alerta) {
-      let mekealert = alert(alerta)
+      let mekealert = alert(alerta);
     },
-
     makePagination(response) {
       let pagination = {
         last_page: response.data.last_page_url,
@@ -162,25 +169,57 @@ export default {
     },
     deletarCategoria(id, page_url) {
       page_url = page_url || BASE_URL + "/api/categorias";
-
-      if (confirm("Tem certeza que deseja excluir?" + id)) {
-        axios
-          .delete(page_url + "/" + id, {
-            method: "delete"
-          })
-          .then(function(response) {
-              mekealert(teste)
-         //   location.reload();
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
+      var vm = this;
+      this.$confirm({
+        message: `Você tem certeza que quer deletar?`,
+        button: {
+          no: "Não",
+          yes: "Sim"
+        },
+        /**
+         * Callback Function
+         * @param {Boolean} confirm
+         */
+        callback: confirm => {
+          if (confirm) {
+            axios
+              .delete(page_url + "/" + id, {
+                method: "delete"
+              })
+              .then(function(response) {
+                vm.fetchCategorias();
+                vm.flashMessage.success({
+                  status: "success",
+                  message: "Categoria foi deletada!"
+                });
+              })
+              .catch(function(error) {
+                console.log(error);
+                vm.flashMessage.error({
+                  status: "error",
+                  message: "Ocorreu um erro ao deletar a Categoria!"
+                });
+              });
+          }
+        }
+      });
     },
-
+    openModalAddCat() {
+      var vm = this;
+      vm.limparCat();
+      $("#exampleModal").modal("show");
+      $(".modal-backdrop").add();
+    },
+    limparCat() {
+      var vm = this;
+      this.categoria.id = "";
+      this.categoria.nome = "";
+      this.categoria.descricao = "";
+    },
     addCategoria(page_url) {
       if (this.edit === false) {
         page_url = BASE_URL + "/api/categorias/";
+        var vm = this;
         axios
           .post(page_url, {
             nome: this.categoria.nome,
@@ -195,15 +234,23 @@ export default {
             console.log(response);
             $("#exampleModal").modal("hide");
             $(".modal-backdrop").remove();
-             this.fetchCategorias();
-            //location.reload();
+            vm.fetchCategorias();
+            vm.flashMessage.success({
+              status: "success",
+              message: "Categoria adicionada com Sucesso!"
+            });
           })
           .catch(function(error) {
             alert(error);
             console.log(error);
+            vm.flashMessage.error({
+              status: "error",
+              message: "Ocorreu um erro ao adicionar a Categoria!"
+            });
           });
       } else {
         page_url = BASE_URL + "/api/categorias/" + this.categoria.id;
+        var vm = this;
         axios
           .put(page_url, {
             nome: this.categoria.nome,
@@ -218,11 +265,20 @@ export default {
             console.log(response);
             $("#exampleModal").modal("hide");
             $(".modal-backdrop").remove();
-            location.reload();
+            vm.fetchCategorias();
+            vm.edit = false;
+            vm.limparCat();
+            vm.flashMessage.success({
+              status: "success",
+              message: "Categoria atualizada com Sucesso!"
+            });
           })
           .catch(function(error) {
-            alert(error);
             console.log(error);
+            vm.flashMessage.error({
+              status: "error",
+              message: "Ocorreu um erro ao editar a Categoria!"
+            });
           });
       }
     },

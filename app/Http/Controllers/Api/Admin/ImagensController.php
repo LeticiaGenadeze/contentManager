@@ -52,10 +52,10 @@ class ImagensController extends Controller
             }
            if (!$imagem->delete()){
             return response()->json([
-                'error' => 'Não foi possivel deletar a Imagem!'], 500);
+                'error' => 'Não foi possivel deletar a Imagem!'], 501);
             }
             return response()->json([
-                'success' => 'Imagem deletada com Sucesso!'], 200);
+                'success' => 'Imagem deletada com Sucesso!'], 201);
         }
     }
 }

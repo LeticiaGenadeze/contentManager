@@ -1,11 +1,7 @@
 <template>
   <div>
-    <link
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      rel="stylesheet"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-      crossorigin="anonymous"
-    />
+    <FlashMessage :position="'right bottom'"></FlashMessage>
+    <vue-confirm-dialog></vue-confirm-dialog>
     <div class="card shadow mb-4">
       <div class="card-header py-3">
         <div class="row">
@@ -14,8 +10,7 @@
           </div>
           <div class="col-md-4 text-right">
             <button
-              data-toggle="modal"
-              data-target="#exampleModal"
+              @click="openModalAddPost()"
               class="btn bg-gradient-info text-white"
             >Adicionar nova Página</button>
           </div>
@@ -149,6 +144,12 @@
 </template>
 
 <script>
+import FlashMessage from "@smartweb/vue-flash-message";
+Vue.use(FlashMessage);
+import VueConfirmDialog from "vue-confirm-dialog";
+Vue.use(VueConfirmDialog);
+Vue.component("vue-confirm-dialog", VueConfirmDialog.default);
+
 export default {
   data() {
     return {
@@ -202,24 +203,52 @@ export default {
     },
     deletarPost(id, page_url) {
       page_url = page_url || BASE_URL + "/api/paginas";
+      var vm = this;
 
-      if (confirm("Tem certeza que deseja excluir?" + id)) {
-        axios
-          .delete(page_url + "/" + id, {
-            method: "delete"
-          })
-          .then(function(response) {
-            location.reload();
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
+      this.$confirm({
+        message: `Você tem certeza que quer deletar?`,
+        button: {
+          no: "Não",
+          yes: "Sim"
+        },
+        /**
+         * Callback Function
+         * @param {Boolean} confirm
+         */
+        callback: confirm => {
+          if (confirm) {
+            axios
+              .delete(page_url + "/" + id, {
+                method: "delete"
+              })
+              .then(function(response) {
+                vm.fetchPosts(page_url);
+                vm.flashMessage.success({
+                  status: "success",
+                  message: "Página foi deletada!"
+                });
+              })
+              .catch(function(error) {
+                console.log(error);
+                vm.flashMessage.error({
+                  status: "error",
+                  message: "Ocorreu um erro ao deletar a Página!"
+                });
+              });
+          }
+        }
+      });
     },
-
+    openModalAddPost() {
+      var vm = this;
+      vm.limparPost();
+      $("#exampleModal").modal("show");
+      $(".modal-backdrop").add();
+    },
     addPost(page_url) {
       if (this.edit === false) {
         page_url = BASE_URL + "/api/paginas/";
+        var vm = this;
         axios
           .post(page_url, {
             nome: this.post.nome,
@@ -235,14 +264,24 @@ export default {
             console.log(response);
             $("#exampleModal").modal("hide");
             $(".modal-backdrop").remove();
-            location.reload();
+            vm.fetchPosts(page_url);
+            vm.limparPost();
+            vm.flashMessage.success({
+              status: "success",
+              message: "Página adicionada com Sucesso!"
+            });
           })
           .catch(function(error) {
             alert(error);
             console.log(error);
+            vm.flashMessage.error({
+              status: "error",
+              message: "Ocorreu um erro ao adicionar a Página!"
+            });
           });
       } else {
         page_url = BASE_URL + "/api/paginas/" + this.post.id;
+        var vm = this;
         axios
           .put(page_url, {
             nome: this.post.nome,
@@ -258,13 +297,30 @@ export default {
             console.log(response);
             $("#exampleModal").modal("hide");
             $(".modal-backdrop").remove();
-            location.reload();
+            vm.fetchPosts();
+            vm.edit = false;
+            vm.limparPost();
+            vm.flashMessage.success({
+              status: "success",
+              message: "Página atualizada com Sucesso!"
+            });
           })
           .catch(function(error) {
             alert(error);
             console.log(error);
+            vm.flashMessage.error({
+              status: "error",
+              message: "Ocorreu um erro ao editar a Página!"
+            });
           });
       }
+    },
+    limparPost() {
+      var vm = this;
+      this.post.id = "";
+      this.post.nome = "";
+      this.post.descricao = "";
+      this.post.conteudo = "";
     },
     editarPost(post) {
       this.edit = true;

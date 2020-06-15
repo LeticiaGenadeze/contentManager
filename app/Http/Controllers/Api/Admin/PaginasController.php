@@ -69,7 +69,7 @@ class PaginasController extends Controller
         }
 
         return response()->json([
-            'error' => 'Erro ao cadastrar a Página!'], 500);
+            'error' => 'Erro ao cadastrar a Página!'], 501);
 
     }
 
@@ -140,7 +140,7 @@ class PaginasController extends Controller
         }
 
         return response()->json([
-            'error' => 'Erro ao atualizar a Pagina!'], 500);
+            'error' => 'Erro ao atualizar a Pagina!'], 501);
     }
 
     /**
@@ -161,10 +161,10 @@ class PaginasController extends Controller
             }*/
            if (!$pagina->delete()){
             return response()->json([
-                'error' => 'Não foi possivel deletar a Pagina!'], 500);
+                'error' => 'Não foi possivel deletar a Pagina!'], 501);
             }
             return response()->json([
-                'success' => 'Pagina deletada com Sucesso!'], 200);
+                'success' => 'Pagina deletada com Sucesso!'], 201);
         }
     }
 }

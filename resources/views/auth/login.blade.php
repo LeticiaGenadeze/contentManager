@@ -53,26 +53,10 @@
                           </button>
                         </form>
                         <hr>
-                        <div class="text-center">
-
-                        @if (Route::has('password.request'))
-                            <a class="small" href="{{ route('password.request') }}">Recuperar Senha</a>
-                        @endif
-
-                        </div>
-                        <div class="text-center">
-                          <a class="small" href="">Criar Conta!</a>
-                        </div>
-                      </div>
-
-
+                    </div>
                 </div>
               </div>
-
             </div>
-
           </div>
-
     </div>
-
 @endsection

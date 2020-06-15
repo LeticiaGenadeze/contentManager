@@ -27,4 +27,8 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/categorias', function () {
         return view('admin.categorias');
     });
-});
+
+    route::get('/perfil', 'PerfilController@index')->name('admin.perfil');
+    route::post('/perfil/atualizar/{id}', 'PerfilController@update')->name('admin.perfil.update');
+
+  });

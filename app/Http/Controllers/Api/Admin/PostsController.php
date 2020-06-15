@@ -80,7 +80,7 @@ class PostsController extends Controller
         }
 
         return response()->json([
-            'error' => 'Erro ao cadastrar o post!'], 300);
+            'error' => 'Erro ao cadastrar o post!'], 501);
     }
 
     /**
@@ -151,7 +151,7 @@ class PostsController extends Controller
         }
 
         return response()->json([
-            'error' => 'Erro ao atualizar o post!'], 500);
+            'error' => 'Erro ao atualizar o post!'], 501);
     }
 
     /**
@@ -172,10 +172,10 @@ class PostsController extends Controller
             }
            if (!$post->delete()){
             return response()->json([
-                'error' => 'Não foi possivel deletar o Post!'], 500);
+                'error' => 'Não foi possivel deletar o Post!'], 501);
             }
             return response()->json([
-                'success' => 'Post deletado com Sucesso!'], 200);
+                'success' => 'Post deletado com Sucesso!'], 201);
         }
     }
 }
