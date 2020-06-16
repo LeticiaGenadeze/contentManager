@@ -2865,6 +2865,8 @@ Vue.use(_smartweb_vue_flash_message__WEBPACK_IMPORTED_MODULE_0___default.a);
 
 Vue.use(vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_1___default.a);
 Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_1___default.a["default"]);
+/*Seta as variáveis e objetos do sistema. */
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2892,11 +2894,14 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       edit: false
     };
   },
+
+  /*Inicializa funcões ao monter a página do post*/
   created: function created() {
     this.fetchPosts();
     this.fetchCategorias();
   },
   methods: {
+    /*Busca os posts na API */
     fetchPosts: function fetchPosts(page_url) {
       page_url = page_url || BASE_URL + "/api/posts";
       var vm = this;
@@ -2907,6 +2912,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
         console.log(error);
       });
     },
+
+    /*Cria paginação, setando os links que retornaram da API*/
     makePagination: function makePagination(response) {
       var pagination = {
         last_page: response.data.last_page_url,
@@ -2915,6 +2922,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       };
       this.pagination = pagination;
     },
+
+    /*Apaga um Post*/
     deletarPost: function deletarPost(id, page_url) {
       page_url = page_url || BASE_URL + "/api/posts";
       var vm = this;
@@ -2950,12 +2959,16 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
         }
       });
     },
+
+    /*Abre a modal para adicionar os posts*/
     openModalAddPost: function openModalAddPost() {
       var vm = this;
       vm.limparPost();
       $("#exampleModal").modal("show");
       $(".modal-backdrop").add();
     },
+
+    /*Adicionar post, da um post pra API e retorna a resposta*/
     addPost: function addPost(page_url) {
       if (this.edit === false) {
         page_url = BASE_URL + "/api/posts/";
@@ -3024,6 +3037,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
         });
       }
     },
+
+    /*Seta os dados e abre a modal de edição*/
     editarPost: function editarPost(post) {
       this.edit = true;
       this.post.id = post.id;
@@ -3036,6 +3051,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       $("#exampleModal").modal("show");
       $(".modal-backdrop").add();
     },
+
+    /*Limpa os dados da memória após fechar a modal*/
     limparPost: function limparPost() {
       var vm = this;
       this.post.id = "";
@@ -3045,6 +3062,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       this.post.idCategoria = "";
       this.post.video = "";
     },
+
+    /*Seta os dados e abre modal para visualizar post */
     visualizarPost: function visualizarPost(post) {
       this.verpost.id = post.id;
       this.verpost.post_id = post.id;
@@ -3056,6 +3075,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       $("#verpost").modal("show");
       $(".modal-backdrop").add();
     },
+
+    /*Lista as categorias para formar um select na inclusão do post*/
     fetchCategorias: function fetchCategorias(page_url) {
       page_url = page_url || BASE_URL + "/api/categorias";
       var vm = this;

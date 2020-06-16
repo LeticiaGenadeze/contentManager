@@ -191,6 +191,7 @@ import VueConfirmDialog from "vue-confirm-dialog";
 Vue.use(VueConfirmDialog);
 Vue.component("vue-confirm-dialog", VueConfirmDialog.default);
 
+/*Seta as variáveis e objetos do sistema. */
 export default {
   data() {
     return {
@@ -219,12 +220,14 @@ export default {
     };
   },
 
+  /*Inicializa funcões ao monter a página do post*/
   created() {
     this.fetchPosts();
     this.fetchCategorias();
   },
 
   methods: {
+    /*Busca os posts na API */
     fetchPosts(page_url) {
       page_url = page_url || BASE_URL + "/api/posts";
       var vm = this;
@@ -239,6 +242,7 @@ export default {
         });
     },
 
+    /*Cria paginação, setando os links que retornaram da API*/
     makePagination(response) {
       let pagination = {
         last_page: response.data.last_page_url,
@@ -247,6 +251,8 @@ export default {
       };
       this.pagination = pagination;
     },
+
+    /*Apaga um Post*/
     deletarPost(id, page_url) {
       page_url = page_url || BASE_URL + "/api/posts";
       var vm = this;
@@ -284,6 +290,8 @@ export default {
         }
       });
     },
+
+    /*Abre a modal para adicionar os posts*/
     openModalAddPost() {
       var vm = this;
       vm.limparPost();
@@ -291,6 +299,7 @@ export default {
       $(".modal-backdrop").add();
     },
 
+    /*Adicionar post, da um post pra API e retorna a resposta*/
     addPost(page_url) {
       if (this.edit === false) {
         page_url = BASE_URL + "/api/posts/";
@@ -365,6 +374,8 @@ export default {
           });
       }
     },
+
+    /*Seta os dados e abre a modal de edição*/
     editarPost(post) {
       this.edit = true;
       this.post.id = post.id;
@@ -378,6 +389,7 @@ export default {
       $(".modal-backdrop").add();
     },
 
+    /*Limpa os dados da memória após fechar a modal*/
     limparPost() {
       var vm = this;
       this.post.id = "";
@@ -387,6 +399,8 @@ export default {
       this.post.idCategoria = "";
       this.post.video = "";
     },
+
+    /*Seta os dados e abre modal para visualizar post */
     visualizarPost(post) {
       this.verpost.id = post.id;
       this.verpost.post_id = post.id;
@@ -398,6 +412,8 @@ export default {
       $("#verpost").modal("show");
       $(".modal-backdrop").add();
     },
+
+    /*Lista as categorias para formar um select na inclusão do post*/
     fetchCategorias(page_url) {
       page_url = page_url || BASE_URL + "/api/categorias";
       var vm = this;
