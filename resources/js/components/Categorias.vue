@@ -122,6 +122,7 @@ import VueConfirmDialog from "vue-confirm-dialog";
 Vue.use(VueConfirmDialog);
 Vue.component("vue-confirm-dialog", VueConfirmDialog.default);
 
+/*Seta as variáveis e objetos do sistema. */
 export default {
   data() {
     return {
@@ -138,11 +139,13 @@ export default {
     };
   },
 
+ /*Inicializa funcões ao montar a página do post*/
   created() {
     this.fetchCategorias();
   },
 
   methods: {
+       /*Busca as categorias na API */
     fetchCategorias(page_url) {
       page_url = page_url || BASE_URL + "/api/categorias";
       var vm = this;
@@ -167,6 +170,8 @@ export default {
       };
       this.pagination = pagination;
     },
+
+    /*Apaga uma Categoria*/
     deletarCategoria(id, page_url) {
       page_url = page_url || BASE_URL + "/api/categorias";
       var vm = this;
@@ -204,18 +209,24 @@ export default {
         }
       });
     },
+
+    /*Abre a modal para adicionar as categorias*/
     openModalAddCat() {
       var vm = this;
       vm.limparCat();
       $("#exampleModal").modal("show");
       $(".modal-backdrop").add();
     },
+
+    /*Limpa os dados da memória após fechar a modal*/
     limparCat() {
       var vm = this;
       this.categoria.id = "";
       this.categoria.nome = "";
       this.categoria.descricao = "";
     },
+
+    /*Adicionar categoria, da um post pra API e retorna a resposta*/
     addCategoria(page_url) {
       if (this.edit === false) {
         page_url = BASE_URL + "/api/categorias/";
@@ -282,6 +293,8 @@ export default {
           });
       }
     },
+
+    /*Seta os dados e abre a modal de edição*/
     editarCategoria(categoria) {
       this.edit = true;
       this.categoria.id = categoria.id;

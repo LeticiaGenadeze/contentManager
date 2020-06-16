@@ -9,7 +9,9 @@ header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Autho
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', function () {
+    return redirect('/login');
+});
 
 Route::group(['prefix' => 'admin'], function(){
     Route::get('/', function () {

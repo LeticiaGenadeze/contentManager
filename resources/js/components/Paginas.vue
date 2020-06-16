@@ -47,16 +47,6 @@
             </tr>
           </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]">
-              <a class="page-link" href="#" @click="fetchPosts(pagination.prev_page_url)">Anterior</a>
-            </li>
-            <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]">
-              <a class="page-link" href="#" @click="fetchPosts(pagination.next_page_url)">Próximo</a>
-            </li>
-          </ul>
-        </nav>
 
         <div
           class="modal fade"
@@ -150,6 +140,7 @@ import VueConfirmDialog from "vue-confirm-dialog";
 Vue.use(VueConfirmDialog);
 Vue.component("vue-confirm-dialog", VueConfirmDialog.default);
 
+/*Seta as variáveis e objetos do sistema. */
 export default {
   data() {
     return {
@@ -168,17 +159,19 @@ export default {
         descricao: ""
       },
       post_id: "",
-      pagination: {},
+      //pagination: {},
       edit: false
     };
   },
 
+ /*Inicializa funcões ao montar a página do post*/
   created() {
     this.fetchPosts();
     this.fetchCategorias();
   },
 
   methods: {
+      /*Busca as páginas na API */
     fetchPosts(page_url) {
       page_url = page_url || BASE_URL + "/api/paginas";
       var vm = this;
@@ -186,25 +179,26 @@ export default {
         .get(page_url)
         .then(function(response) {
           vm.posts = response.data;
-          vm.makePagination(response);
+         // vm.makePagination(response);
         })
         .catch(function(error) {
           console.log(error);
         });
     },
 
-    makePagination(response) {
+   /* makePagination(response) {
       let pagination = {
         last_page: response.data.last_page_url,
         next_page_url: response.data.next_page_url,
         prev_page_url: response.data.prev_page_url
       };
       this.pagination = pagination;
-    },
+    },*/
+
+    /*Apaga uma Pagina*/
     deletarPost(id, page_url) {
       page_url = page_url || BASE_URL + "/api/paginas";
       var vm = this;
-
       this.$confirm({
         message: `Você tem certeza que quer deletar?`,
         button: {
@@ -239,12 +233,16 @@ export default {
         }
       });
     },
+
+    /*Abre a modal para adicionar as paginas*/
     openModalAddPost() {
       var vm = this;
       vm.limparPost();
       $("#exampleModal").modal("show");
       $(".modal-backdrop").add();
     },
+
+    /*Adicionar pagina, da um post pra API e retorna a resposta*/
     addPost(page_url) {
       if (this.edit === false) {
         page_url = BASE_URL + "/api/paginas/";
@@ -315,6 +313,8 @@ export default {
           });
       }
     },
+
+    /*Limpa os dados da memória após fechar a modal*/
     limparPost() {
       var vm = this;
       this.post.id = "";
@@ -322,6 +322,8 @@ export default {
       this.post.descricao = "";
       this.post.conteudo = "";
     },
+
+    /*Seta os dados e abre a modal de edição*/
     editarPost(post) {
       this.edit = true;
       this.post.id = post.id;
@@ -332,6 +334,8 @@ export default {
       $("#exampleModal").modal("show");
       $(".modal-backdrop").add();
     },
+
+     /*Seta os dados e abre modal para visualizar*/
     visualizarPost(post) {
       this.verpost.id = post.id;
       this.verpost.post_id = post.id;
@@ -341,6 +345,7 @@ export default {
       $("#verpost").modal("show");
       $(".modal-backdrop").add();
     },
+
     fetchCategorias(page_url) {
       page_url = page_url || BASE_URL + "/api/paginas";
       var vm = this;

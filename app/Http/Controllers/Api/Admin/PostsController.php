@@ -19,7 +19,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $post = Post::where('tipo', 'post')->orderBy('created_at','DESC')->paginate(6);
+        $post = Post::where('tipo', 'post')->orderBy('created_at','DESC')->paginate(5);
         if(!$post){
             return response()->json([
                 'error' => 'Nenhum post encontrada!'], 404);

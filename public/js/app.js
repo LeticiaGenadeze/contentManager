@@ -2045,6 +2045,8 @@ Vue.use(_smartweb_vue_flash_message__WEBPACK_IMPORTED_MODULE_0___default.a);
 
 Vue.use(vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_1___default.a);
 Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_1___default.a["default"]);
+/*Seta as variáveis e objetos do sistema. */
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2060,10 +2062,13 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       edit: false
     };
   },
+
+  /*Inicializa funcões ao montar a página do post*/
   created: function created() {
     this.fetchCategorias();
   },
   methods: {
+    /*Busca as categorias na API */
     fetchCategorias: function fetchCategorias(page_url) {
       page_url = page_url || BASE_URL + "/api/categorias";
       var vm = this;
@@ -2085,6 +2090,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       };
       this.pagination = pagination;
     },
+
+    /*Apaga uma Categoria*/
     deletarCategoria: function deletarCategoria(id, page_url) {
       page_url = page_url || BASE_URL + "/api/categorias";
       var vm = this;
@@ -2120,18 +2127,24 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
         }
       });
     },
+
+    /*Abre a modal para adicionar as categorias*/
     openModalAddCat: function openModalAddCat() {
       var vm = this;
       vm.limparCat();
       $("#exampleModal").modal("show");
       $(".modal-backdrop").add();
     },
+
+    /*Limpa os dados da memória após fechar a modal*/
     limparCat: function limparCat() {
       var vm = this;
       this.categoria.id = "";
       this.categoria.nome = "";
       this.categoria.descricao = "";
     },
+
+    /*Adicionar categoria, da um post pra API e retorna a resposta*/
     addCategoria: function addCategoria(page_url) {
       if (this.edit === false) {
         page_url = BASE_URL + "/api/categorias/";
@@ -2192,6 +2205,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
         });
       }
     },
+
+    /*Seta os dados e abre a modal de edição*/
     editarCategoria: function editarCategoria(categoria) {
       this.edit = true;
       this.categoria.id = categoria.id;
@@ -2455,16 +2470,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 Vue.use(_smartweb_vue_flash_message__WEBPACK_IMPORTED_MODULE_0___default.a);
 
@@ -2488,7 +2493,7 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
         descricao: ""
       },
       post_id: "",
-      pagination: {},
+      //pagination: {},
       edit: false
     };
   },
@@ -2501,20 +2506,20 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       page_url = page_url || BASE_URL + "/api/paginas";
       var vm = this;
       axios.get(page_url).then(function (response) {
-        vm.posts = response.data;
-        vm.makePagination(response);
+        vm.posts = response.data; // vm.makePagination(response);
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    makePagination: function makePagination(response) {
-      var pagination = {
-        last_page: response.data.last_page_url,
-        next_page_url: response.data.next_page_url,
-        prev_page_url: response.data.prev_page_url
-      };
-      this.pagination = pagination;
-    },
+
+    /* makePagination(response) {
+       let pagination = {
+         last_page: response.data.last_page_url,
+         next_page_url: response.data.next_page_url,
+         prev_page_url: response.data.prev_page_url
+       };
+       this.pagination = pagination;
+     },*/
     deletarPost: function deletarPost(id, page_url) {
       page_url = page_url || BASE_URL + "/api/paginas";
       var vm = this;
@@ -40027,56 +40032,6 @@ var render = function() {
               }),
               0
             )
-          ]),
-          _vm._v(" "),
-          _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
-            _c("ul", { staticClass: "pagination justify-content-center" }, [
-              _c(
-                "li",
-                {
-                  staticClass: "page-item",
-                  class: [{ disabled: !_vm.pagination.prev_page_url }]
-                },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "page-link",
-                      attrs: { href: "#" },
-                      on: {
-                        click: function($event) {
-                          return _vm.fetchPosts(_vm.pagination.prev_page_url)
-                        }
-                      }
-                    },
-                    [_vm._v("Anterior")]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "li",
-                {
-                  staticClass: "page-item",
-                  class: [{ disabled: !_vm.pagination.next_page_url }]
-                },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "page-link",
-                      attrs: { href: "#" },
-                      on: {
-                        click: function($event) {
-                          return _vm.fetchPosts(_vm.pagination.next_page_url)
-                        }
-                      }
-                    },
-                    [_vm._v("Próximo")]
-                  )
-                ]
-              )
-            ])
           ]),
           _vm._v(" "),
           _c(

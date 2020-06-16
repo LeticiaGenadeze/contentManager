@@ -220,7 +220,7 @@ export default {
     };
   },
 
-  /*Inicializa funcões ao monter a página do post*/
+  /*Inicializa funcões ao montar a página do post*/
   created() {
     this.fetchPosts();
     this.fetchCategorias();
