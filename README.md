@@ -18,7 +18,7 @@
 
 - Passo 9: Rodar o comando php artisan migrate
 
-- Passo 10: Rodar o comando php artisan seed para criar um  usuário padrão
+- Passo 10: Rodar o comando php artisan db:seed para criar um  usuário padrão
 
 - Passo 11: Rodar o comando php artisan serve
 
