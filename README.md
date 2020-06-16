@@ -8,9 +8,9 @@
 
 - Passo 4: Configurar o arquivo .env com as informações de Banco de Dados
 
-- Passo 5: Abrir um terminal na pasta do projeto e rodar o comando php artisan key:generate
+- Passo 5: Abrir um terminal na pasta do projeto e Rodar o comando composer install
 
-- Passo 6: Rodar o comando composer install
+- Passo 6: Rodar o comando php artisan key:generate 
 
 - Passo 7: Rodar o comando npm install
 
