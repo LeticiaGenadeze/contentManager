@@ -2475,6 +2475,8 @@ Vue.use(_smartweb_vue_flash_message__WEBPACK_IMPORTED_MODULE_0___default.a);
 
 Vue.use(vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_1___default.a);
 Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_1___default.a["default"]);
+/*Seta as variáveis e objetos do sistema. */
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2497,11 +2499,14 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       edit: false
     };
   },
+
+  /*Inicializa funcões ao montar a página do post*/
   created: function created() {
     this.fetchPosts();
     this.fetchCategorias();
   },
   methods: {
+    /*Busca as páginas na API */
     fetchPosts: function fetchPosts(page_url) {
       page_url = page_url || BASE_URL + "/api/paginas";
       var vm = this;
@@ -2520,6 +2525,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
        };
        this.pagination = pagination;
      },*/
+
+    /*Apaga uma Pagina*/
     deletarPost: function deletarPost(id, page_url) {
       page_url = page_url || BASE_URL + "/api/paginas";
       var vm = this;
@@ -2555,12 +2562,16 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
         }
       });
     },
+
+    /*Abre a modal para adicionar as paginas*/
     openModalAddPost: function openModalAddPost() {
       var vm = this;
       vm.limparPost();
       $("#exampleModal").modal("show");
       $(".modal-backdrop").add();
     },
+
+    /*Adicionar pagina, da um post pra API e retorna a resposta*/
     addPost: function addPost(page_url) {
       if (this.edit === false) {
         page_url = BASE_URL + "/api/paginas/";
@@ -2625,6 +2636,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
         });
       }
     },
+
+    /*Limpa os dados da memória após fechar a modal*/
     limparPost: function limparPost() {
       var vm = this;
       this.post.id = "";
@@ -2632,6 +2645,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       this.post.descricao = "";
       this.post.conteudo = "";
     },
+
+    /*Seta os dados e abre a modal de edição*/
     editarPost: function editarPost(post) {
       this.edit = true;
       this.post.id = post.id;
@@ -2642,6 +2657,8 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       $("#exampleModal").modal("show");
       $(".modal-backdrop").add();
     },
+
+    /*Seta os dados e abre modal para visualizar*/
     visualizarPost: function visualizarPost(post) {
       this.verpost.id = post.id;
       this.verpost.post_id = post.id;
@@ -2900,7 +2917,7 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
     };
   },
 
-  /*Inicializa funcões ao monter a página do post*/
+  /*Inicializa funcões ao montar a página do post*/
   created: function created() {
     this.fetchPosts();
     this.fetchCategorias();
@@ -3000,7 +3017,6 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
             message: "Post adicionado com Sucesso!"
           });
         })["catch"](function (error) {
-          alert(error);
           console.log(error);
           vm.flashMessage.error({
             status: "error",
@@ -3033,7 +3049,6 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
             message: "Post atualizado com Sucesso!"
           });
         })["catch"](function (error) {
-          alert(error);
           console.log(error);
           vm.flashMessage.error({
             status: "error",
@@ -3087,7 +3102,6 @@ Vue.component("vue-confirm-dialog", vue_confirm_dialog__WEBPACK_IMPORTED_MODULE_
       var vm = this;
       axios.get(page_url).then(function (response) {
         vm.categorias = response.data;
-        vm.makePagination(response);
       })["catch"](function (error) {
         console.log(error);
       });

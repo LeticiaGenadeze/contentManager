@@ -131,6 +131,14 @@
       }
     });
   $('.selectonfocus').mask("00/00/0000", {selectOnFocus: true});
+  $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
+    $("body").toggleClass("sidebar-toggled");
+    $(".sidebar").toggleClass("toggled");
+    if ($(".sidebar").hasClass("toggled")) {
+      $('.sidebar .collapse').collapse('hide');
+      $('.sidebar-brand-icon').css('display','block !important');
+    };
+  });
 });
     </script>
 

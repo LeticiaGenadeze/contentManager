@@ -329,7 +329,6 @@ export default {
             });
           })
           .catch(function(error) {
-            alert(error);
             console.log(error);
             vm.flashMessage.error({
               status: "error",
@@ -365,7 +364,6 @@ export default {
             });
           })
           .catch(function(error) {
-            alert(error);
             console.log(error);
             vm.flashMessage.error({
               status: "error",
@@ -421,8 +419,7 @@ export default {
         .get(page_url)
         .then(function(response) {
           vm.categorias = response.data;
-          vm.makePagination(response);
-        })
+         })
         .catch(function(error) {
           console.log(error);
         });
