@@ -1,5 +1,7 @@
 ## Instalando o Content Manager
 
+Trabalho realizado para a disciplina de Engenharia da Usabilidade
+
 - Passo 1: Clonar o repositório para a máquina.
 
 - Passo 2: Criar um arquivo .env a partir do .env.example
